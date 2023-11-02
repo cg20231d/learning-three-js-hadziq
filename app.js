@@ -13,31 +13,43 @@ const camera = new THREE.PerspectiveCamera(
     0.025,
     1000
 );
-camera.position.set(0, 2, 5);
+camera.position.set(0, 2, 10);
+
+// Load the texture
+const textureLoader = new THREE.TextureLoader();
+const albedoTexture = textureLoader.load("albedo.jpg");
+//const displacementTexture = textureLoader.load("displacement.jpg");
+const normalsTexture = textureLoader.load("normals.jpg");
+const roughnessTexture = textureLoader.load("roughness.jpg");
 
 // Create the cube geometry (vertex shader)
 const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
 
 // Create the cube material (fragment shader)
-const cubeMaterial = new THREE.MeshToonMaterial({
-    color: 0xff00ff // This sets the color to red. You can change the hex value to any color you prefer.
+const cubeMaterial = new THREE.MeshPhongMaterial({
+    //color: 0xff00ff // This sets the color to red. You can change the hex value to any color you prefer.
+    map: albedoTexture,
+    //displacementMap: displacementTexture, // Displacement map
+    normalMap: normalsTexture, // Normal map
+    roughnessMap: roughnessTexture // Roughness map
 });
+//cubeMaterial.displacementScale = 0.2; // Adjust the value as needed
+cubeMaterial.normalScale.set(0.5, 0.5); // Adjust the values as needed
 
 // Create the cube as a 3D object a.k.a. mesh
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 scene.add(cube);
 
-// Load the texture
-const textureLoader = new THREE.TextureLoader();
-const planeTexture = textureLoader.load("albedo.jpg");
-
 // Create a plane geometry
-const planeGeometry = new THREE.PlaneGeometry(12, 12); // Adjust the size as needed
+const planeGeometry = new THREE.PlaneGeometry(5, 5); // Adjust the size as needed
 
 // Create a green material for the plane
-const planeMaterial = new THREE.MeshToonMaterial({
-    //color: 0x00ff00 // Green color
-    map: planeTexture
+const planeMaterial = new THREE.MeshPhongMaterial({
+    color: 0x00ff00 // Green color
+    //map: albedoTexture,
+    //displacementMap: displacementTexture, // Displacement map
+    //normalMap: normalsTexture, // Normal map
+    //roughnessMap: roughnessTexture // Roughness map
 });
 
 // Create the plane as a 3D object (mesh)
@@ -53,7 +65,7 @@ scene.add(ambientLight);
 // Set up the directional light
 const directionalLight = new THREE.DirectionalLight(0xCCCCCC, 0.5); // Color and intensity
 directionalLight.position.set(0, 1, 0); // Direction
-//scene.add(directionalLight);
+scene.add(directionalLight);
 
 // Set up the point light
 const pointLight = new THREE.PointLight(0xFFFFFF, 1); // Color and intensity
