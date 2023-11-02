@@ -19,13 +19,32 @@ camera.position.set(0, 2, 5);
 const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
 
 // Create the cube material (fragment shader)
-const cubeMaterial = new THREE.MeshPhongMaterial({
+const cubeMaterial = new THREE.MeshToonMaterial({
     color: 0xff00ff // This sets the color to red. You can change the hex value to any color you prefer.
 });
 
 // Create the cube as a 3D object a.k.a. mesh
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 scene.add(cube);
+
+// Load the texture
+const textureLoader = new THREE.TextureLoader();
+const planeTexture = textureLoader.load("albedo.jpg");
+
+// Create a plane geometry
+const planeGeometry = new THREE.PlaneGeometry(12, 12); // Adjust the size as needed
+
+// Create a green material for the plane
+const planeMaterial = new THREE.MeshToonMaterial({
+    //color: 0x00ff00 // Green color
+    map: planeTexture
+});
+
+// Create the plane as a 3D object (mesh)
+const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+plane.rotation.x = -Math.PI / 2; // Rotate the plane to be horizontal
+plane.position.y = -2; // Adjust the position so it's below the cube
+scene.add(plane);
 
 // Set up the ambient light
 const ambientLight = new THREE.AmbientLight(0x202020);
@@ -34,11 +53,11 @@ scene.add(ambientLight);
 // Set up the directional light
 const directionalLight = new THREE.DirectionalLight(0xCCCCCC, 0.5); // Color and intensity
 directionalLight.position.set(0, 1, 0); // Direction
-scene.add(directionalLight);
+//scene.add(directionalLight);
 
 // Set up the point light
 const pointLight = new THREE.PointLight(0xFFFFFF, 1); // Color and intensity
-pointLight.position.set(1, 2, 3); // Position
+pointLight.position.set(1.5, 1.5, 1.5); // Position
 scene.add(pointLight);
 
 // Handle resize events
