@@ -52,9 +52,11 @@ const objectMaterial = new THREE.MeshBasicMaterial({
 //objectMaterial.displacementScale = 0.2; // Adjust the value as needed
 //objectMaterial.normalScale.set(0.5, 0.5); // Adjust the values as needed
 
+const objectGroup = new THREE.Group();
+
 // Create the object as a 3D object a.k.a. mesh
 const object = new THREE.Mesh(objectGeometry, objectMaterial);
-scene.add(object);
+objectGroup.add(object);
 
 // Create a plane geometry
 const planeGeometry = new THREE.PlaneGeometry(5, 5); // Adjust the size as needed
@@ -72,7 +74,9 @@ const planeMaterial = new THREE.MeshPhongMaterial({
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
 plane.rotation.x = -Math.PI / 2; // Rotate the plane to be horizontal
 plane.position.y = -2; // Adjust the position so it's below the object
-scene.add(plane);
+objectGroup.add(plane);
+
+scene.add(objectGroup);
 
 // Set up the ambient light
 const ambientLight = new THREE.AmbientLight(0x202020);
@@ -118,9 +122,9 @@ document.addEventListener('keydown', onDocumentKeyDown, false);
 
 // Render loop
 function animate() {
-    object.rotation.x += 0.01;
-    object.rotation.y += 0.01;
-    object.rotation.z += 0.01;
+    objectGroup.rotation.x += 0.01;
+    objectGroup.rotation.y += 0.01;
+    objectGroup.rotation.z += 0.01;
     camera.lookAt(object.position);
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
