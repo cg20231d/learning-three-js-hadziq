@@ -23,7 +23,7 @@ const normalsTexture = textureLoader.load("normals.jpg");
 const roughnessTexture = textureLoader.load("roughness.jpg");
 
 // Create the object geometry (vertex shader)
-const objectGeometry = new THREE.SphereGeometry(2, 16, 32);
+const objectGeometry = new THREE.CylinderGeometry(0, 0.5, 3, 32);
 
 // Create the object material (fragment shader)
 const objectMaterial = new THREE.MeshPhongMaterial({
