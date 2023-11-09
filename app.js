@@ -23,18 +23,34 @@ const normalsTexture = textureLoader.load("normals.jpg");
 const roughnessTexture = textureLoader.load("roughness.jpg");
 
 // Create the object geometry (vertex shader)
-const objectGeometry = new THREE.CylinderGeometry(0, 0.5, 3, 32);
+const objectGeometry = new THREE.BufferGeometry();
+
+const vertices = new Float32Array( [
+	-1.0, -1.0,  1.0, // v0
+	 1.0, -1.0,  1.0, // v1
+	 1.0,  1.0,  1.0, // v2
+	-1.0,  1.0,  1.0, // v3
+] );
+
+const indices = [
+	0, 1, 2,
+	2, 3, 0,
+];
+
+objectGeometry.setIndex( indices );
+objectGeometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+
 
 // Create the object material (fragment shader)
-const objectMaterial = new THREE.MeshPhongMaterial({
-    //color: 0xff00ff // This sets the color to red. You can change the hex value to any color you prefer.
-    map: albedoTexture,
+const objectMaterial = new THREE.MeshBasicMaterial({
+    color: 0xff00ff, // This sets the color to red. You can change the hex value to any color you prefer.
+    //map: albedoTexture,
     //displacementMap: displacementTexture, // Displacement map
-    normalMap: normalsTexture, // Normal map
-    roughnessMap: roughnessTexture // Roughness map
+    //normalMap: normalsTexture, // Normal map
+    //bumpMap: roughnessTexture // Roughness map
 });
 //objectMaterial.displacementScale = 0.2; // Adjust the value as needed
-objectMaterial.normalScale.set(0.5, 0.5); // Adjust the values as needed
+//objectMaterial.normalScale.set(0.5, 0.5); // Adjust the values as needed
 
 // Create the object as a 3D object a.k.a. mesh
 const object = new THREE.Mesh(objectGeometry, objectMaterial);
@@ -49,7 +65,7 @@ const planeMaterial = new THREE.MeshPhongMaterial({
     map: albedoTexture,
     //displacementMap: displacementTexture, // Displacement map
     normalMap: normalsTexture, // Normal map
-    roughnessMap: roughnessTexture // Roughness map
+    bumpMap: roughnessTexture // Roughness map
 });
 
 // Create the plane as a 3D object (mesh)
